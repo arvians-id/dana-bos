@@ -45,7 +45,7 @@
 							<td>Pagelaran/Purabaya</td>
 							<td>Sukabumi</td>
 							<td>Jawa Barat</td>
-							<td><a href="<?= base_url('admin/detail_umum/' . date('Y/m', strtotime($umum['tanggal']))) ?>"><i class="ni ni-fat-add"></i></a></td>
+							<td><a href="<?= base_url('admin/detail_umum/' . date('Y/m', strtotime($umum['tanggal']))) ?>"><i class="fas fa-info-circle"></i></a></td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>

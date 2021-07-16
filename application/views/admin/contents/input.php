@@ -39,6 +39,10 @@
 					</button>
 				</div>
 			<?php endif; ?>
+			<div class="alert alert-warning rounded-0" role="alert">
+				<h4 class="alert-heading">Perhatian</h4>
+				<p>Jika anda melakukan penginputan data saldo dan tanggal sebelum hari ini, maka perlu diperhatikan saldo sisa anda agar tidak terjadinya minus pada saldo.</p>
+			</div>
 			<!-- Form groups used in grid -->
 			<form method="POST">
 				<div class="row">
@@ -59,7 +63,8 @@
 						</div>
 						<div class="form-group">
 							<label class="form-control-label">Tanggal</label><small class="text-danger"> *</small>
-							<input type="text" class="form-control" value="<?= date('d-F-y h:i:s') ?>" name="tanggal" readonly>
+							<input type="date" class="form-control <?= form_error('tanggal') ? 'is-invalid' : '' ?>" value="<?= set_value('tanggal') ?>" name="tanggal">
+							<div class="invalid-feedback"><?= form_error('tanggal') ?></div>
 						</div>
 						<div class="form-group">
 							<label class="form-control-label">No Kode</label>

@@ -7,7 +7,7 @@ class Dana_model extends CI_Model
 	{
 		$data = [
 			'jenis_id' => $this->input->post('jenis_id'),
-			'tanggal' => date('Y-m-d h:i:s'),
+			'tanggal' => $this->input->post('tanggal') . date(' h:i:s'),
 			'no_kode' => $this->input->post('no_kode'),
 			'no_bukti' => $this->input->post('no_bukti'),
 			'uraian' => $this->input->post('uraian'),
@@ -15,6 +15,18 @@ class Dana_model extends CI_Model
 			'pengeluaran' => $this->input->post('pengeluaran') != null ? $this->input->post('pengeluaran') : 0,
 		];
 		$this->db->insert('tb_data_dana_bos', $data);
+	}
+	public function ubahDana($id_bos)
+	{
+		$data = [
+			'no_kode' => $this->input->post('no_kode'),
+			'no_bukti' => $this->input->post('no_bukti'),
+			'uraian' => $this->input->post('uraian'),
+			'penerimaan' => $this->input->post('penerimaan') != null ? $this->input->post('penerimaan') : 0,
+			'pengeluaran' => $this->input->post('pengeluaran') != null ? $this->input->post('pengeluaran') : 0,
+		];
+		$this->db->where('id_bos', $id_bos);
+		$this->db->update('tb_data_dana_bos', $data);
 	}
 	public function getDana($jenis_id)
 	{
@@ -33,8 +45,18 @@ class Dana_model extends CI_Model
 									WHERE jenis_id = $jenis_id
 									AND YEAR(tanggal) = $tahun
 									AND MONTH(tanggal) = $bulan
+									ORDER BY tanggal
 								");
 		return $query->result_array();
+	}
+	public function getDetailDanaById($id_bos)
+	{
+		$this->db->select('*');
+		$this->db->from('tb_data_dana_bos a');
+		$this->db->join('tb_data_jenis_bos b', 'a.jenis_id = b.id_jenis');
+		$this->db->where('a.id_bos', $id_bos);
+
+		return $this->db->get()->row_array();
 	}
 	public function getTotal($jenis_id, $tahun, $bulan)
 	{
@@ -43,6 +65,14 @@ class Dana_model extends CI_Model
 		$this->db->where('jenis_id', $jenis_id);
 		$this->db->where("YEAR(tanggal)", $tahun);
 		$this->db->where("MONTH(tanggal)", $bulan);
+
+		return $this->db->get()->row_array();
+	}
+	public function getAllTotal($jenis_id)
+	{
+		$this->db->select('(SUM(tb_data_dana_bos.penerimaan)-SUM(tb_data_dana_bos.pengeluaran)) as saldo');
+		$this->db->from('tb_data_dana_bos');
+		$this->db->where('jenis_id', $jenis_id);
 
 		return $this->db->get()->row_array();
 	}

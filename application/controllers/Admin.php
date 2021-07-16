@@ -7,7 +7,6 @@ require('./application/third_party/phpoffice/vendor/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Style;
 
 class Admin extends CI_Controller
 {
@@ -22,6 +21,9 @@ class Admin extends CI_Controller
 			'judul' => 'Dashboard',
 			'viewContent' => 'admin/contents/index',
 			'admin' => $this->db->get_where('tb_login', ['username' => $this->session->userdata('username')])->row_array(),
+			'saldoKas' => $this->dana_m->getAllTotal(1),
+			'saldoTunai' => $this->dana_m->getAllTotal(2),
+			'saldoBank' => $this->dana_m->getAllTotal(3),
 		];
 		$this->load->view('admin/layouts/indexLayout', $data);
 	}
@@ -43,10 +45,12 @@ class Admin extends CI_Controller
 		}
 		$data = [
 			'judul' => 'Dashboard',
-			'viewContent' => 'admin/contents/detail_umum',
+			'viewContent' => 'admin/contents/detail',
 			'admin' => $this->db->get_where('tb_login', ['username' => $this->session->userdata('username')])->row_array(),
 			'getDetail' => $getDetail,
 			'getTotal' => $this->dana_m->getTotal(1, $tahun, $bulan),
+			'header' => 'BUKU KAS UMUM',
+			'jenisBOS' => 1
 		];
 		$this->load->view('admin/layouts/dataLayout', $data);
 	}
@@ -83,10 +87,12 @@ class Admin extends CI_Controller
 		}
 		$data = [
 			'judul' => 'Dashboard',
-			'viewContent' => 'admin/contents/detail_tunai',
+			'viewContent' => 'admin/contents/detail',
 			'admin' => $this->db->get_where('tb_login', ['username' => $this->session->userdata('username')])->row_array(),
 			'getDetail' => $getDetail,
 			'getTotal' => $this->dana_m->getTotal(2, $tahun, $bulan),
+			'header' => 'BUKU PEMBANTU KAS TUNAI',
+			'jenisBOS' => 2
 		];
 		$this->load->view('admin/layouts/dataLayout', $data);
 	}
@@ -123,10 +129,12 @@ class Admin extends CI_Controller
 		}
 		$data = [
 			'judul' => 'Dashboard',
-			'viewContent' => 'admin/contents/detail_bank',
+			'viewContent' => 'admin/contents/detail',
 			'admin' => $this->db->get_where('tb_login', ['username' => $this->session->userdata('username')])->row_array(),
 			'getDetail' => $getDetail,
 			'getTotal' => $this->dana_m->getTotal(3, $tahun, $bulan),
+			'header' => 'BUKU PEMBANTU BANK',
+			'jenisBOS' => 3
 		];
 		$this->load->view('admin/layouts/dataLayout', $data);
 	}
@@ -148,13 +156,14 @@ class Admin extends CI_Controller
 	public function input()
 	{
 		$this->form_validation->set_rules('jenis_id', 'Jenis BOS', 'required');
+		$this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
 		$this->form_validation->set_rules('no_kode', 'Nomor Kode', 'numeric|max_length[5]');
 		$this->form_validation->set_rules('no_bukti', 'Nomor Bukti', 'max_length[15]');
 		$this->form_validation->set_rules('uraian', 'Uraian', 'required|max_length[150]');
 		$this->form_validation->set_rules('penerimaan', 'Penerimaan', 'numeric|greater_than_equal_to[0]');
 		$this->form_validation->set_rules('pengeluaran', 'Pengeluaran', 'numeric|greater_than_equal_to[0]');
 
-		// Jika validasi gagal, akan muncul error di input dan kembali ke halaman daerah
+		// Jika validasi gagal, akan muncul error di input dan kembali ke halaman input
 		if ($this->form_validation->run() == FALSE) {
 			$data = [
 				'judul' => 'Dashboard',
@@ -164,15 +173,50 @@ class Admin extends CI_Controller
 			];
 			$this->load->view('admin/layouts/dataLayout', $data);
 		} else {
-			$this->dana_m->simpanDana(); // Insert data daerah
+			$this->dana_m->simpanDana(); // Insert data dana
 			$this->session->set_flashdata('success', 'Data berhasil disimpan.'); // Membuat pesan notif jika insert data berhasil
-			redirect('admin/input'); // redirect ke halaman daerah
+			redirect('admin/input'); // redirect ke halaman input
+		}
+	}
+	public function edit_dana($id_bos)
+	{
+		$this->form_validation->set_rules('no_kode', 'Nomor Kode', 'numeric|max_length[5]');
+		$this->form_validation->set_rules('no_bukti', 'Nomor Bukti', 'max_length[15]');
+		$this->form_validation->set_rules('uraian', 'Uraian', 'required|max_length[150]');
+		$this->form_validation->set_rules('penerimaan', 'Penerimaan', 'numeric|greater_than_equal_to[0]');
+		$this->form_validation->set_rules('pengeluaran', 'Pengeluaran', 'numeric|greater_than_equal_to[0]');
+
+		// Jika validasi gagal, akan muncul error di input dan kembali ke halaman edit dana
+		if ($this->form_validation->run() == FALSE) {
+			$data = [
+				'judul' => 'Dashboard',
+				'viewContent' => 'admin/contents/edit_dana',
+				'admin' => $this->db->get_where('tb_login', ['username' => $this->session->userdata('username')])->row_array(),
+				'getDetail' => $this->dana_m->getDetailDanaById($id_bos)
+			];
+			$this->load->view('admin/layouts/dataLayout', $data);
+		} else {
+			$this->dana_m->ubahDana($id_bos); // ubah data dana
+			$this->session->set_flashdata('success', 'Data berhasil diubah.'); // Membuat pesan notif jika ubah data berhasil
+			redirect('admin/edit_dana/' . $id_bos); // redirect ke halaman edit dana
 		}
 	}
 	public function get_jenis_ajax($jenis_id)
 	{
 		$saldo = $this->dana_m->getTotal($jenis_id, date('Y'), date('m'));
 		echo json_encode($saldo);
+	}
+	public function hapus($id_bos)
+	{
+		$tahun = $this->input->post('tahun');
+		$bulan = $this->input->post('bulan');
+		$jenis_id = $this->input->post('jenis_id');
+		$detail = $jenis_id == 1 ? 'detail_umum' : ($jenis_id == 2 ? 'detail_tunai' : 'detail_bank');
+		$redirect = "admin/$detail/$tahun/$bulan";
+
+		$this->db->delete('tb_data_dana_bos', ['id_bos' => $id_bos]);
+		$this->session->set_flashdata('success', 'Data berhasil dihapus.');
+		redirect($redirect);
 	}
 	public function laporan()
 	{
@@ -341,7 +385,7 @@ class Admin extends CI_Controller
 						->setCellValue('F' . ($column + 11), 'NUPTK. 2156 7676 6730 0003');
 
 					$writer = new Xlsx($excel);
-					$fileName = bin2hex(random_bytes(12));
+					$fileName = $headerName . ' ' . strtoupper($sectionName);
 
 					header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 					header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
@@ -375,7 +419,7 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('username', 'Username', 'required|alpha_dash');
 		$this->form_validation->set_rules('password', 'Password', 'min_length[5]');
 
-		// Jika validasi gagal, akan muncul error di profil dan kembali ke halaman daerah
+		// Jika validasi gagal, akan muncul error di profil dan kembali ke halaman profil
 		if ($this->form_validation->run() == FALSE) {
 			$data = [
 				'judul' => 'Dashboard',
@@ -392,7 +436,7 @@ class Admin extends CI_Controller
 			$this->db->where('id', $this->session->userdata('id'));
 			$this->db->update('tb_login', $data);
 			$this->session->set_flashdata('success', 'Profil berhasil diubah.'); // Membuat pesan notif jika ubah data berhasil
-			redirect('admin/profil'); // redirect ke halaman daerah
+			redirect('admin/profil'); // redirect ke halaman profil
 		}
 	}
 }

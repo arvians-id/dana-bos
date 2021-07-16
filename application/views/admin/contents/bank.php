@@ -45,7 +45,7 @@
 							<td>Pagelaran/Purabaya</td>
 							<td>Sukabumi</td>
 							<td>Jawa Barat</td>
-							<td><a href="<?= base_url('admin/detail_bank/' . date('Y/m', strtotime($bank['tanggal']))) ?>"><i class="ni ni-fat-add"></i></a></td>
+							<td><a href="<?= base_url('admin/detail_bank/' . date('Y/m', strtotime($bank['tanggal']))) ?>"><i class="fas fa-info-circle"></i></a></td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>

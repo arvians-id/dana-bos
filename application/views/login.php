@@ -27,8 +27,8 @@
 				<div class="header-body text-center mb-7">
 					<div class="row justify-content-center">
 						<div class="col-xl-5 col-lg-6 col-md-8 px-5">
-							<h1 class="text-white">Welcome!</h1>
-							<p class="text-lead text-white">Use these awesome forms to login.</p>
+							<h1 class="text-white">Selamat Datang!</h1>
+							<p class="text-lead text-white">Madrasah Ibtidaiyah Ciseureuh.</p>
 						</div>
 					</div>
 				</div>
@@ -46,7 +46,7 @@
 					<div class="card bg-secondary border-0 mb-0">
 						<div class="card-body px-lg-5 py-lg-5">
 							<div class="text-center text-muted mb-4">
-								<small>Sign in with your account</small>
+								<small>Silahkan login menggunakan akun admin anda.</small>
 							</div>
 							<?php if ($this->session->flashdata('success')) : ?>
 								<div class="alert alert-success mt-2" role="alert">
@@ -77,7 +77,7 @@
 									<small class="text-danger"><?= form_error('password') ?></small>
 								</div>
 								<div class="text-center">
-									<button type="submit" class="btn btn-primary my-4">Sign in</button>
+									<button type="submit" class="btn btn-primary my-4">Login</button>
 								</div>
 							</form>
 						</div>
@@ -89,10 +89,10 @@
 	<!-- Footer -->
 	<footer class="py-5" id="footer-main">
 		<div class="container">
-			<div class="row align-items-center justify-content-xl-between">
-				<div class="col-xl-6">
-					<div class="copyright text-center text-xl-left text-muted">
-						&copy; <?= date('Y') ?> <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+			<div class="row">
+				<div class="col-xl-12">
+					<div class="copyright text-center text-muted">
+						&copy; <?= date('Y') ?> Madrasah Ibtidaiyah Ciseureuh
 					</div>
 				</div>
 			</div>
