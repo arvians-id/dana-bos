@@ -48,24 +48,18 @@
 							<select name="jenis_id" class="form-control <?= form_error('jenis_id') ? 'is-invalid' : '' ?>">
 								<option value="" selected disabled>Pilih</option>
 								<?php foreach ($getJenis as $jenis) : ?>
-									<option value="<?= $jenis['id_jenis'] ?>" <?= set_value('jenis_id') != $jenis['id_jenis'] ?: 'selected' ?>><?= $jenis['nama_bos'] ?></option>
+									<option value="<?= $jenis['id_jenis'] ?>" data-jenis="<?= $jenis['nama_bos'] ?>" <?= set_value('jenis_id') != $jenis['id_jenis'] ?: 'selected' ?>><?= $jenis['nama_bos'] ?></option>
 								<?php endforeach ?>
 							</select>
 							<div class="invalid-feedback"><?= form_error('jenis_id') ?></div>
 						</div>
 						<div class="form-group">
-							<label class="form-control-label">Daerah</label><small class="text-danger"> *</small>
-							<select name="daerah_id" class="form-control <?= form_error('daerah_id') ? 'is-invalid' : '' ?>">
-								<option value="" selected disabled>Pilih</option>
-								<?php foreach ($getDaerah as $daerah) : ?>
-									<option value="<?= $daerah['id_daerah'] ?>" <?= set_value('daerah_id') != $daerah['id_daerah'] ?: 'selected' ?>><?= $daerah['madrasah'] . ' - ' . $daerah['desa_kecamatan'] . ' - ' . $daerah['kabupaten'] . ' - ' . $daerah['provinsi'] ?></option>
-								<?php endforeach ?>
-							</select>
-							<div class="invalid-feedback"><?= form_error('daerah_id') ?></div>
+							<label class="form-control-label">Saldo</label><small class="text-info"> * Saldo berdasarkan tahun dan bulan saat ini</small>
+							<input type="text" class="form-control" id="saldo" name="saldo" value="<?= set_value('saldo', 0) ?>" readonly>
 						</div>
 						<div class="form-group">
 							<label class="form-control-label">Tanggal</label><small class="text-danger"> *</small>
-							<input type="text" class="form-control" value="<?= date('d-M-y h:i:s') ?>" name="tanggal" readonly>
+							<input type="text" class="form-control" value="<?= date('d-F-y h:i:s') ?>" name="tanggal" readonly>
 						</div>
 						<div class="form-group">
 							<label class="form-control-label">No Kode</label>
@@ -85,22 +79,65 @@
 							<div class="invalid-feedback"><?= form_error('uraian') ?></div>
 						</div>
 						<div class="form-group">
-							<label class="form-control-label">Penerimaan</label><small class="text-danger"> *</small><small class="text-info"> Beri 0 jika tidak ada</small>
-							<input type="text" class="form-control <?= form_error('penerimaan') ? 'is-invalid' : '' ?>" value="<?= set_value('penerimaan') ?>" name="penerimaan" placeholder="contoh: 1000000">
+							<label class="form-control-label">Penerimaan</label><small class="text-info"> * Kosongkan jika tidak ada</small>
+							<input type="text" class="form-control <?= form_error('penerimaan') ? 'is-invalid' : '' ?>" value="<?= set_value('penerimaan') ?>" name="penerimaan" placeholder="contoh: 1000000" autocomplete="off">
 							<div class="invalid-feedback"><?= form_error('penerimaan') ?></div>
 
 						</div>
 						<div class="form-group">
-							<label class="form-control-label">Pengeluaran</label><small class="text-danger"> *</small><small class="text-info"> Beri 0 jika tidak ada</small>
-							<input type="text" class="form-control <?= form_error('pengeluaran') ? 'is-invalid' : '' ?>" value="<?= set_value('pengeluaran') ?>" name="pengeluaran" placeholder="contoh: 1000000">
+							<label class="form-control-label">Pengeluaran</label><small class="text-info"> * Kosongkan jika tidak ada</small>
+							<input type="text" class="form-control <?= form_error('pengeluaran') ? 'is-invalid' : '' ?>" value="<?= set_value('pengeluaran') ?>" name="pengeluaran" placeholder="contoh: 1000000" autocomplete="off">
 							<div class="invalid-feedback"><?= form_error('pengeluaran') ?></div>
 						</div>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-primary">Simpan</button>
+				<small class="d-block sisa-saldo">Sisa saldo [Belum ditemukan]</small>
+				<button type="submit" class="btn btn-primary" id="btn-simpan">Simpan</button>
 			</form>
 		</div>
 	</div>
 	<!-- Footer -->
 	<?php $this->load->view('admin/components/footer') ?>
 </div>
+<script src="<?= base_url('assets/template/argon') ?>/assets/vendor/jquery/dist/jquery.min.js"></script>
+<script>
+	$(function() {
+		$('[name="jenis_id"]').on('change', function() {
+			let jenis_id = $(this).val();
+			let jenis = $(this).find(':selected').data('jenis');
+			$.ajax({
+				url: `<?= base_url('admin/get_jenis_ajax/') ?>${jenis_id}`,
+				method: 'GET',
+				dataType: 'json',
+				success: function(response) {
+					let saldo = response.saldo ? response.saldo : 0;
+					$('[name="saldo"]').val(`${saldo}`)
+					$('.sisa-saldo').html(`Sisa saldo ${saldo}`)
+				}
+			})
+		})
+
+		$('[name="penerimaan"]').on('keyup', function() {
+			let pengeluaran = parseInt($('[name="pengeluaran"]').val() == '' ? 0 : $('[name="pengeluaran"]').val())
+			let saldo = parseInt($('[name="saldo"]').val()) + parseInt($(this).val()) - pengeluaran;
+			if (isNaN(saldo)) {
+				$('.sisa-saldo').html('Sisa saldo ' + (parseInt($('[name="saldo"]').val()) - pengeluaran))
+			} else {
+				$('.sisa-saldo').html(`Sisa saldo ${saldo}`)
+			}
+
+			saldo <= 0 ? $('#btn-simpan').attr('disabled', true) : $('#btn-simpan').attr('disabled', false)
+		})
+		$('[name="pengeluaran"]').on('keyup', function() {
+			let penerimaan = parseInt($('[name="penerimaan"]').val() == '' ? 0 : $('[name="penerimaan"]').val())
+			let saldo = parseInt($('[name="saldo"]').val()) + penerimaan - parseInt($(this).val());
+			if (isNaN(saldo)) {
+				$('.sisa-saldo').html('Sisa saldo ' + (parseInt($('[name="saldo"]').val()) + penerimaan))
+			} else {
+				$('.sisa-saldo').html(`Sisa saldo ${saldo}`)
+			}
+
+			saldo <= 0 ? $('#btn-simpan').attr('disabled', true) : $('#btn-simpan').attr('disabled', false)
+		})
+	})
+</script>

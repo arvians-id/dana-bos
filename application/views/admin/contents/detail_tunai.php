@@ -29,10 +29,10 @@
 					<p>Provinsi</p>
 				</div>
 				<div class="col-6 col-lg-2">
-					<p>: <?= $getTotal['madrasah'] ?></p>
-					<p>: <?= $getTotal['desa_kecamatan'] ?></p>
-					<p>: <?= $getTotal['kabupaten'] ?></p>
-					<p>: <?= $getTotal['provinsi'] ?></p>
+					<p>: MI Cisereuh</p>
+					<p>: Pagelaran/Purabaya</p>
+					<p>: Sukabumi</p>
+					<p>: Jawa Barat</p>
 				</div>
 			</div>
 		</div>
@@ -90,6 +90,7 @@
 			</div>
 
 			<a href="<?= base_url('admin/cetak_tunai/' . $this->uri->segment(3) . '/' . $this->uri->segment(4)) ?>" class="btn btn-primary" target="_BLANK">Cetak</a>
+			<a href="<?= base_url('admin/excel_tunai/' . $this->uri->segment(3) . '/' . $this->uri->segment(4)) ?>" class="btn btn-success">Export Excel</a>
 		</div>
 	</div>
 	<!-- Footer -->

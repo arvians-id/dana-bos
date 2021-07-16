@@ -41,10 +41,10 @@
 						<tr>
 							<td><?= $no++ ?></td>
 							<td><?= date('Y - F', strtotime($bank['tanggal'])) ?></td>
-							<td><?= $bank['madrasah'] ?></td>
-							<td><?= $bank['desa_kecamatan'] ?></td>
-							<td><?= $bank['kabupaten'] ?></td>
-							<td><?= $bank['provinsi'] ?></td>
+							<td>MI Cisereuh</td>
+							<td>Pagelaran/Purabaya</td>
+							<td>Sukabumi</td>
+							<td>Jawa Barat</td>
 							<td><a href="<?= base_url('admin/detail_bank/' . date('Y/m', strtotime($bank['tanggal']))) ?>"><i class="ni ni-fat-add"></i></a></td>
 						</tr>
 					<?php endforeach ?>

@@ -17,7 +17,7 @@
 	<!-- Page plugins -->
 	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
 	<!-- Argon CSS -->
-	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/css/argon.css?v=1.1.0" type="text/css">
+	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/css/argon.css" type="text/css">
 </head>
 
 <body>
@@ -39,8 +39,9 @@
 	<!-- Optional JS -->
 	<script src="<?= base_url('assets/template/argon') ?>/assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="<?= base_url('assets/template/argon') ?>/assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="<?= base_url('assets/template/argon') ?>/assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<!-- Argon JS -->
-	<script src="<?= base_url('assets/template/argon') ?>/assets/js/argon.js?v=1.1.0"></script>
+	<script src="<?= base_url('assets/template/argon') ?>/assets/js/argon.js"></script>
 	<!-- Demo JS - remove this in your project -->
 	<script src="<?= base_url('assets/template/argon') ?>/assets/js/demo.min.js"></script>
 </body>

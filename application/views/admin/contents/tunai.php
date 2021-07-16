@@ -41,10 +41,10 @@
 						<tr>
 							<td><?= $no++ ?></td>
 							<td><?= date('Y - F', strtotime($tunai['tanggal'])) ?></td>
-							<td><?= $tunai['madrasah'] ?></td>
-							<td><?= $tunai['desa_kecamatan'] ?></td>
-							<td><?= $tunai['kabupaten'] ?></td>
-							<td><?= $tunai['provinsi'] ?></td>
+							<td>MI Cisereuh</td>
+							<td>Pagelaran/Purabaya</td>
+							<td>Sukabumi</td>
+							<td>Jawa Barat</td>
 							<td><a href="<?= base_url('admin/detail_tunai/' . date('Y/m', strtotime($tunai['tanggal']))) ?>"><i class="ni ni-fat-add"></i></a></td>
 						</tr>
 					<?php endforeach ?>

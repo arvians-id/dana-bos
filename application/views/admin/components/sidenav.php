@@ -36,19 +36,6 @@
 				<h6 class="navbar-heading p-0 text-muted">Data BOS</h6>
 				<ul class="navbar-nav mb-md-3">
 					<li class="nav-item">
-						<a class="nav-link <?= activeMenu(['daerah']) ?>" href="#data-master" data-toggle="collapse" role="button" aria-expanded="<?= expandedMenu(['daerah']) ?>" aria-controls="data-master">
-							<i class="ni ni-ungroup text-orange"></i>
-							<span class="nav-link-text">Master Data</span>
-						</a>
-						<div class="collapse <?= showMenu(['daerah']) ?>" id="data-master">
-							<ul class="nav nav-sm flex-column">
-								<li class="nav-item">
-									<a href="<?= base_url('admin/daerah') ?>" class="nav-link <?= activeMenu(['daerah']) ?>">Data Daerah</a>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<li class="nav-item">
 						<?php $segment2 = ['umum', 'tunai', 'bank', 'detail_umum', 'detail_tunai', 'detail_bank'] ?>
 						<a class="nav-link <?= activeMenu($segment2) ?>" href="#dana-bos" data-toggle="collapse" role="button" aria-expanded="<?= expandedMenu($segment2) ?>" aria-controls="dana-bos">
 							<i class="ni ni-money-coins text-success"></i>
@@ -77,7 +64,7 @@
 					<li class="nav-item">
 						<a class="nav-link <?= activeMenu(['laporan']) ?>" href="<?= base_url('admin/laporan') ?>">
 							<i class="ni ni-collection text-primary"></i>
-							<span class="nav-link-text">Laporan</span>
+							<span class="nav-link-text">Cetak</span>
 						</a>
 					</li>
 				</ul>
@@ -88,13 +75,13 @@
 				<!-- Navigation -->
 				<ul class="navbar-nav mb-md-3">
 					<li class="nav-item">
-						<a class="nav-link <?= activeMenu(['profil']) ?>" href="<?= base_url('admin/profil') ?>" target="_blank">
+						<a class="nav-link <?= activeMenu(['profil']) ?>" href="<?= base_url('admin/profil') ?>">
 							<i class="ni ni-circle-08"></i>
 							<span class="nav-link-text">Profil</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('login/logout') ?>" target="_blank">
+						<a class="nav-link" href="<?= base_url('login/logout') ?>">
 							<i class="ni ni-button-power"></i>
 							<span class="nav-link-text">Logout</span>
 						</a>
