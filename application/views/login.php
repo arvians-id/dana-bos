@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/vendor/nucleo/css/nucleo.css" type="text/css">
 	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
 	<!-- Argon CSS -->
-	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/css/argon.css?v=1.1.0" type="text/css">
+	<link rel="stylesheet" href="<?= base_url('assets/template/argon') ?>/assets/css/argon.css" type="text/css">
 </head>
 
 <body class="bg-default">
@@ -46,7 +46,7 @@
 					<div class="card bg-secondary border-0 mb-0">
 						<div class="card-body px-lg-5 py-lg-5">
 							<div class="text-center text-muted mb-4">
-								<small>Silahkan login menggunakan akun admin anda.</small>
+								<small>Silahkan login menggunakan akun anda.</small>
 							</div>
 							<?php if ($this->session->flashdata('success')) : ?>
 								<div class="alert alert-success mt-2" role="alert">
@@ -106,7 +106,7 @@
 	<script src="<?= base_url('assets/template/argon') ?>/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
 	<script src="<?= base_url('assets/template/argon') ?>/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
 	<!-- Argon JS -->
-	<script src="<?= base_url('assets/template/argon') ?>/assets/js/argon.js?v=1.1.0"></script>
+	<script src="<?= base_url('assets/template/argon') ?>/assets/js/argon.js"></script>
 	<!-- Demo JS - remove this in your project -->
 	<script src="<?= base_url('assets/template/argon') ?>/assets/js/demo.min.js"></script>
 </body>

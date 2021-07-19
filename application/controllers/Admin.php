@@ -14,6 +14,7 @@ class Admin extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Dana_model', 'dana_m');
+		is_logged_not_in();
 	}
 	public function index()
 	{
